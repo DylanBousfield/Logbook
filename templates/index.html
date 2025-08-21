@@ -16,37 +16,43 @@
 <p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
 <p class="p1"><span class="s1">&lt;html&gt;</span></p>
 <p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Work Log&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1">&lt;title&gt;Work Log&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">body { font-family: Arial, sans-serif; margin: 40px; }</span></p>
+<p class="p1"><span class="s1">label { display: inline-block; width: 100px; margin-top: 10px; }</span></p>
+<p class="p1"><span class="s1">input, select, textarea { margin-bottom: 10px; padding: 5px; width: 250px; }</span></p>
+<p class="p1"><span class="s1">button { padding: 10px 20px; margin-top: 10px; }</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/head&gt;</span></p>
 <p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Enter Work Log&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;form method="POST" action="/log"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label&gt;Employee:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;select name="employee_id"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{% for emp in employees %}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="{{ emp.id }}"&gt;{{ emp.name }}&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{% endfor %}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/select&gt;&lt;br&gt;</span></p>
+<p class="p1"><span class="s1">&lt;h1&gt;Enter Work Log&lt;/h1&gt;</span></p>
+<p class="p1"><span class="s1">&lt;form method="POST" action="/log"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;label&gt;Employee:&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">&lt;select name="employee_id"&gt;</span></p>
+<p class="p1"><span class="s1">{% for employee in employees %}</span></p>
+<p class="p1"><span class="s1">&lt;option value="{{ employee.id }}"&gt;{{ employee.name }}&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1">{% endfor %}</span></p>
+<p class="p1"><span class="s1">&lt;/select&gt;&lt;br&gt;</span></p>
 <p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label&gt;Workplace:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;select name="workplace_id"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{% for wp in workplaces %}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value="{{ wp.id }}"&gt;{{ wp.name }}&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>{% endfor %}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/select&gt;&lt;br&gt;</span></p>
+<p class="p1"><span class="s1">&lt;label&gt;Workplace:&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">&lt;select name="workplace_id"&gt;</span></p>
+<p class="p1"><span class="s1">{% for workplace in workplaces %}</span></p>
+<p class="p1"><span class="s1">&lt;option value="{{ workplace.id }}"&gt;{{ workplace.name }}&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1">{% endfor %}</span></p>
+<p class="p1"><span class="s1">&lt;/select&gt;&lt;br&gt;</span></p>
 <p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label&gt;Date:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="date" name="date" required&gt;&lt;br&gt;</span></p>
+<p class="p1"><span class="s1">&lt;label&gt;Date:&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">&lt;input type="date" name="date" required&gt;&lt;br&gt;</span></p>
 <p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label&gt;Hours:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="number" name="hours" step="0.1" required&gt;&lt;br&gt;</span></p>
+<p class="p1"><span class="s1">&lt;label&gt;Hours:&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">&lt;input type="number" name="hours" step="0.1" required&gt;&lt;br&gt;</span></p>
 <p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label&gt;Description:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;textarea name="description" required&gt;&lt;/textarea&gt;&lt;br&gt;</span></p>
+<p class="p1"><span class="s1">&lt;label&gt;Description:&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1">&lt;textarea name="description" required&gt;&lt;/textarea&gt;&lt;br&gt;</span></p>
 <p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;button type="submit"&gt;Submit&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/form&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;a href="/admin"&gt;Admin Panel&lt;/a&gt;</span></p>
+<p class="p1"><span class="s1">&lt;button type="submit"&gt;Submit&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/form&gt;</span></p>
+<p class="p1"><span class="s1">&lt;a href="/admin"&gt;Admin Panel&lt;/a&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/body&gt;</span></p>
 <p class="p1"><span class="s1">&lt;/html&gt;</span></p>
 </body>
