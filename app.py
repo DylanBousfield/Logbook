@@ -6,6 +6,7 @@ import os
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///./worklogs.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 db = SQLAlchemy(app)
 
 # -----------------------------
@@ -32,6 +33,7 @@ class WorkLog(db.Model):
 # -----------------------------
 # DATABASE INITIALIZATION
 # -----------------------------
+@app.before_first_request
 def initialize_database():
     db.create_all()
     if Employee.query.count() == 0:
@@ -39,9 +41,6 @@ def initialize_database():
     if Workplace.query.count() == 0:
         db.session.add(Workplace(name="Office"))
     db.session.commit()
-
-# Initialize at startup (works with Gunicorn)
-initialize_database()
 
 # -----------------------------
 # ROUTES
@@ -65,7 +64,7 @@ def log():
         workplace_id=workplace_id,
         date=date,
         hours=hours,
-        description=description,
+        description=description
     )
     db.session.add(new_log)
     db.session.commit()
@@ -100,6 +99,7 @@ def export():
             "Hours": log.hours,
             "Description": log.description
         })
+
     df = pd.DataFrame(data)
     filename = "worklogs.xlsx"
     df.to_excel(filename, index=False)
