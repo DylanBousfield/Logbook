@@ -30,20 +30,6 @@ class WorkLog(db.Model):
     workplace = db.relationship("Workplace", backref="logs")
 
 # -----------------------------
-# CREATE TABLES & INITIAL DATA
-# -----------------------------
-@app.before_first_request
-def create_tables():
-    db.create_all()
-
-    # Add default employee/workplace if empty
-    if Employee.query.count() == 0:
-        db.session.add(Employee(name="John Doe"))
-    if Workplace.query.count() == 0:
-        db.session.add(Workplace(name="Office"))
-    db.session.commit()
-
-# -----------------------------
 # ROUTES
 # -----------------------------
 @app.route("/")
@@ -91,6 +77,7 @@ def export():
 
     logs = query.all()
 
+    # Convert to dataframe for Excel
     data = []
     for log in logs:
         data.append({
@@ -108,7 +95,20 @@ def export():
     return send_file(filename, as_attachment=True)
 
 # -----------------------------
+# DATABASE INITIALIZATION
+# -----------------------------
+def initialize_database():
+    db.create_all()
+    # Add default employee and workplace if empty
+    if Employee.query.count() == 0:
+        db.session.add(Employee(name="John Doe"))
+    if Workplace.query.count() == 0:
+        db.session.add(Workplace(name="Office"))
+    db.session.commit()
+
+# -----------------------------
 # MAIN
 # -----------------------------
 if __name__ == "__main__":
+    initialize_database()
     app.run(debug=True)
