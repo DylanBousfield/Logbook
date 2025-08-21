@@ -27,6 +27,18 @@ class WorkLog(db.Model):
     employee = db.relationship("Employee", backref="logs")
     workplace = db.relationship("Workplace", backref="logs")
 
+@app.before_first_request
+def create_tables():
+    db.create_all()
+
+    # Add initial data only if empty
+    if Employee.query.count() == 0:
+        db.session.add(Employee(name="Simon"))
+    if Workplace.query.count() == 0:
+        db.session.add(Workplace(name="WSL"))
+    db.session.commit()
+
+
 # -----------------------------
 # ROUTES
 # -----------------------------
