@@ -97,18 +97,18 @@ def export():
 # -----------------------------
 # DATABASE INITIALIZATION
 # -----------------------------
+initialize_database()
 def initialize_database():
     db.create_all()
     # Add default employee and workplace if empty
     if Employee.query.count() == 0:
-        db.session.add(Employee(name="John Doe"))
+        db.session.add(Employee(name="Simon"))
     if Workplace.query.count() == 0:
-        db.session.add(Workplace(name="Office"))
+        db.session.add(Workplace(name="WSL"))
     db.session.commit()
 
 # -----------------------------
 # MAIN
 # -----------------------------
 if __name__ == "__main__":
-    initialize_database()
     app.run(debug=True)
