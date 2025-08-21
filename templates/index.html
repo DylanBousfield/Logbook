@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="grid md:grid-cols-2 gap-6 items-start">
+    <div class="bg-white rounded-2xl shadow p-6 border border-slate-200">
+      <h1 class="text-xl font-semibold mb-4">New Work Log</h1>
+      <form method="post" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-1">Name</label>
+          <input type="text" name="name" required class="w-full rounded-xl border-slate-300 focus:border-primary focus:ring-primary" placeholder="Jane Doe" />
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium mb-1">Date</label>
+            <input type="date" name="work_date" required class="w-full rounded-xl border-slate-300 focus:border-primary focus:ring-primary" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium mb-1">Hours</label>
+            <input type="number" name="hours" step="0.1" min="0" required class="w-full rounded-xl border-slate-300 focus:border-primary focus:ring-primary" placeholder="7.5" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-1">Description</label>
+          <textarea name="description" rows="5" required class="w-full rounded-xl border-slate-300 focus:border-primary focus:ring-primary" placeholder="What was completed..."></textarea>
+        </div>
+        <button class="px-4 py-2 rounded-xl bg-primary text-white hover:opacity-90">Submit Log</button>
+      </form>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow p-6 border border-slate-200">
+      <h2 class="text-lg font-semibold mb-2">How it works</h2>
+      <ol class="list-decimal pl-5 space-y-2 text-sm text-slate-700">
+        <li>Fill in your name, the date, hours worked, and a short description.</li>
+        <li>Hit <span class="font-semibold">Submit Log</span>. You’ll see a confirmation.</li>
+        <li>Managers can see all entries on the <a href="/admin" class="text-primary underline">Admin</a> page and export to Excel.</li>
+      </ol>
+    </div>
+  </div>
+{% endblock %}
