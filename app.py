@@ -33,7 +33,7 @@ class WorkLog(db.Model):
 # -----------------------------
 # DATABASE INITIALIZATION
 # -----------------------------
-@app.before_first_request
+@app.before_request
 def initialize_database():
     db.create_all()
     if Employee.query.count() == 0:
