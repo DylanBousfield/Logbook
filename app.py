@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from flask_sqlalchemy import SQLAlchemy
 import pandas as pd
+import os
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///worklogs.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 # -----------------------------
@@ -27,17 +29,19 @@ class WorkLog(db.Model):
     employee = db.relationship("Employee", backref="logs")
     workplace = db.relationship("Workplace", backref="logs")
 
+# -----------------------------
+# CREATE TABLES & INITIAL DATA
+# -----------------------------
 @app.before_first_request
 def create_tables():
     db.create_all()
 
-    # Add initial data only if empty
+    # Add default employee/workplace if empty
     if Employee.query.count() == 0:
-        db.session.add(Employee(name="Simon"))
+        db.session.add(Employee(name="John Doe"))
     if Workplace.query.count() == 0:
-        db.session.add(Workplace(name="WSL"))
+        db.session.add(Workplace(name="Office"))
     db.session.commit()
-
 
 # -----------------------------
 # ROUTES
