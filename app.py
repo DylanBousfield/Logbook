@@ -4,7 +4,7 @@ import pandas as pd
 import os
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///worklogs.db"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///./worklogs.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
@@ -28,6 +28,20 @@ class WorkLog(db.Model):
     workplace_id = db.Column(db.Integer, db.ForeignKey("workplace.id"))
     employee = db.relationship("Employee", backref="logs")
     workplace = db.relationship("Workplace", backref="logs")
+
+# -----------------------------
+# DATABASE INITIALIZATION
+# -----------------------------
+def initialize_database():
+    db.create_all()
+    if Employee.query.count() == 0:
+        db.session.add(Employee(name="John Doe"))
+    if Workplace.query.count() == 0:
+        db.session.add(Workplace(name="Office"))
+    db.session.commit()
+
+# Initialize at startup (works with Gunicorn)
+initialize_database()
 
 # -----------------------------
 # ROUTES
@@ -77,7 +91,6 @@ def export():
 
     logs = query.all()
 
-    # Convert to dataframe for Excel
     data = []
     for log in logs:
         data.append({
@@ -88,26 +101,12 @@ def export():
             "Description": log.description
         })
     df = pd.DataFrame(data)
-
     filename = "worklogs.xlsx"
     df.to_excel(filename, index=False)
-
     return send_file(filename, as_attachment=True)
 
 # -----------------------------
-# DATABASE INITIALIZATION
-# -----------------------------
-def initialize_database():	
-    db.create_all()
-    # Add default employee and workplace if empty
-    if Employee.query.count() == 0:
-        db.session.add(Employee(name="Simon"))
-    if Workplace.query.count() == 0:
-        db.session.add(Workplace(name="WSL"))
-    db.session.commit()
-
-# -----------------------------
-# MAIN
+# RUN LOCAL
 # -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)
