@@ -1,75 +1,124 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.7">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-  </style>
+    <title>Admin Panel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #ecf0f1;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-start;
+        }
+        select {
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #2ecc71;
+            border: none;
+            color: white;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #27ae60;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #bdc3c7;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #3498db;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: #2c3e50;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;title&gt;Admin Panel&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1">&lt;style&gt;</span></p>
-<p class="p1"><span class="s1">body { font-family: Arial, sans-serif; margin: 40px; }</span></p>
-<p class="p1"><span class="s1">table { border-collapse: collapse; width: 100%; margin-top: 20px; }</span></p>
-<p class="p1"><span class="s1">th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }</span></p>
-<p class="p1"><span class="s1">th { background-color: #f2f2f2; }</span></p>
-<p class="p1"><span class="s1">select { padding: 5px; margin-right: 10px; }</span></p>
-<p class="p1"><span class="s1">button { padding: 5px 10px; }</span></p>
-<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;h1&gt;Admin Panel&lt;/h1&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;form method="GET" action="/export"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;label&gt;Filter by Employee:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1">&lt;select name="employee_id"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;option value=""&gt;All&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">{% for employee in employees %}</span></p>
-<p class="p1"><span class="s1">&lt;option value="{{ employee.id }}"&gt;{{ employee.name }}&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">{% endfor %}</span></p>
-<p class="p1"><span class="s1">&lt;/select&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;label&gt;Filter by Workplace:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1">&lt;select name="workplace_id"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;option value=""&gt;All&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">{% for workplace in workplaces %}</span></p>
-<p class="p1"><span class="s1">&lt;option value="{{ workplace.id }}"&gt;{{ workplace.name }}&lt;/option&gt;</span></p>
-<p class="p1"><span class="s1">{% endfor %}</span></p>
-<p class="p1"><span class="s1">&lt;/select&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;button type="submit"&gt;Export to Excel&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/form&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;table&gt;</span></p>
-<p class="p1"><span class="s1">&lt;tr&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Employee&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Workplace&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Date&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Hours&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;th&gt;Description&lt;/th&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/tr&gt;</span></p>
-<p class="p1"><span class="s1">{% for log in logs %}</span></p>
-<p class="p1"><span class="s1">&lt;tr&gt;</span></p>
-<p class="p1"><span class="s1">&lt;td&gt;{{ log.employee.name }}&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1">&lt;td&gt;{{ log.workplace.name }}&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1">&lt;td&gt;{{ log.date }}&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1">&lt;td&gt;{{ log.hours }}&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1">&lt;td&gt;{{ log.description }}&lt;/td&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/tr&gt;</span></p>
-<p class="p1"><span class="s1">{% endfor %}</span></p>
-<p class="p1"><span class="s1">&lt;/table&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1">&lt;a href="/"&gt;Back to Log Entry&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+    <div class="container">
+        <h1>Admin Panel</h1>
+
+        <form method="GET" action="/export">
+            <label>Filter by Employee:</label>
+            <select name="employee_id">
+                <option value="">All</option>
+                {% for emp in employees %}
+                <option value="{{ emp.id }}">{{ emp.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Filter by Workplace:</label>
+            <select name="workplace_id">
+                <option value="">All</option>
+                {% for wp in workplaces %}
+                <option value="{{ wp.id }}">{{ wp.name }}</option>
+                {% endfor %}
+            </select>
+
+            <button type="submit">Export to Excel</button>
+        </form>
+
+        <table>
+            <tr>
+                <th>Employee</th>
+                <th>Workplace</th>
+                <th>Date</th>
+                <th>Hours</th>
+                <th>Description</th>
+            </tr>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.employee.name }}</td>
+                <td>{{ log.workplace.name }}</td>
+                <td>{{ log.date }}</td>
+                <td>{{ log.hours }}</td>
+                <td>{{ log.description }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <a href="/">Back to Log Form</a>
+    </div>
 </body>
 </html>

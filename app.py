@@ -1,7 +1,12 @@
-from flask import Flask, render_template, request, redirect, url_for, send_file
-from flask_sqlalchemy import SQLAlchemy
-import pandas as pd
+from __future__ import annotations
 import os
+from datetime import datetime, date
+from io import BytesIO
+
+from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
+import pandas as pd
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///./worklogs.db"
@@ -37,9 +42,10 @@ class WorkLog(db.Model):
 def initialize_database():
     db.create_all()
     if Employee.query.count() == 0:
-        db.session.add(Employee(name="John Doe"))
+        db.session.add(Employee(name="Dylan"))
     if Workplace.query.count() == 0:
-        db.session.add(Workplace(name="Office"))
+        db.session.add(Workplace(name="Admin"))
+
     db.session.commit()
 
 # -----------------------------
@@ -69,6 +75,29 @@ def log():
     db.session.add(new_log)
     db.session.commit()
     return redirect(url_for("index"))
+# Add new employee
+@app.route("/add_employee", methods=["GET", "POST"])
+def add_employee():
+    if request.method == "POST":
+        name = request.form["name"]
+        if name:
+            new_emp = Employee(name=name)
+            db.session.add(new_emp)
+            db.session.commit()
+            return redirect(url_for("admin"))
+    return render_template("add_employee.html")
+
+# Add new workplace
+@app.route("/add_workplace", methods=["GET", "POST"])
+def add_workplace():
+    if request.method == "POST":
+        name = request.form["name"]
+        if name:
+            new_wp = Workplace(name=name)
+            db.session.add(new_wp)
+            db.session.commit()
+            return redirect(url_for("admin"))
+    return render_template("add_workplace.html")
 
 @app.route("/admin")
 def admin():
@@ -110,3 +139,4 @@ def export():
 # -----------------------------
 if __name__ == "__main__":
     app.run(debug=True)
+app = create_app()
