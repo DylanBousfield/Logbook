@@ -97,8 +97,7 @@ def export():
 # -----------------------------
 # DATABASE INITIALIZATION
 # -----------------------------
-initialize_database()
-def initialize_database():
+def initialize_database():	
     db.create_all()
     # Add default employee and workplace if empty
     if Employee.query.count() == 0:
