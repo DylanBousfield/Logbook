@@ -329,6 +329,10 @@ function fetchLogs() {
         });
 }
 
+// Run fetchLogs once on page load
+fetchLogs();
+
+// Also run when filters change
 employeeFilter.addEventListener('change', fetchLogs);
 workplaceFilter.addEventListener('change', fetchLogs);
 </script>
