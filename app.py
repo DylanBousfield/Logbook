@@ -119,12 +119,12 @@ def export_excel():
     workplace_id = request.args.get('workplace_id', type=int)
 
     # Start query
-    query = Log.query
+    query = WorkLog.query
 
-    # Apply filters if provided
-    if employee_id:
+    # Apply filters only if they are provided
+    if employee_id is not None:
         query = query.filter_by(employee_id=employee_id)
-    if workplace_id:
+    if workplace_id is not None:
         query = query.filter_by(workplace_id=workplace_id)
 
     logs = query.all()
