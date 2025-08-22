@@ -82,12 +82,16 @@ def admin():
     workplaces = Workplace.query.all()
     return render_template("admin.html", logs=logs, employees=employees, workplaces=workplaces)
 
-@app.route("/export")
-def export():
-    employee_id = request.args.get("employee_id")
-    workplace_id = request.args.get("workplace_id")
+@app.route('/export')
+def export_excel():
+    # Get optional filters from query parameters
+    employee_id = request.args.get('employee_id', type=int)
+    workplace_id = request.args.get('workplace_id', type=int)
 
-    query = WorkLog.query
+    # Start query
+    query = Log.query
+
+    # Apply filters if provided
     if employee_id:
         query = query.filter_by(employee_id=employee_id)
     if workplace_id:
@@ -95,21 +99,30 @@ def export():
 
     logs = query.all()
 
+    # Convert logs to dicts
     data = []
     for log in logs:
         data.append({
-            "Employee": log.employee.name,
-            "Workplace": log.workplace.name,
-            "Date": log.date,
-            "Hours": log.hours,
-            "Description": log.description
+            'Employee': log.employee.name,
+            'Workplace': log.workplace.name,
+            'Date': log.date,
+            'Hours': log.hours,
+            'Description': log.description
         })
 
     df = pd.DataFrame(data)
-    filename = "worklogs.xlsx"
-    df.to_excel(filename, index=False)
-    return send_file(filename, as_attachment=True)
 
+    # Calculate total hours and append as last row
+    total_hours = df['Hours'].sum() if not df.empty else 0
+    total_row = {'Employee':'', 'Workplace':'', 'Date':'', 'Hours':total_hours, 'Description':'Total Hours'}
+    df = pd.concat([df, pd.DataFrame([total_row])], ignore_index=True)
+
+    # Export to Excel in memory
+    output = BytesIO()
+    df.to_excel(output, index=False, sheet_name='Work Logs')
+    output.seek(0)
+
+    return send_file(output, download_name="work_logs.xlsx", as_attachment=True)
 # -----------------------------
 # NEW CRUD ROUTES
 # -----------------------------

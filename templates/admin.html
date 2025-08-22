@@ -184,10 +184,28 @@
 
 <!-- Work Logs Section -->
 <div class="card logs-card">
+    <!-- Filters + Export button -->
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
         <h2>Work Logs</h2>
-        <a class="export-btn" href="/export">⬇ Export to Excel</a>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <form id="exportForm" method="GET" action="/export" style="display: flex; gap: 5px; align-items: center;">
+                <select name="employee_id">
+                    <option value="">All Employees</option>
+                    {% for emp in employees %}
+                    <option value="{{ emp.id }}">{{ emp.name }}</option>
+                    {% endfor %}
+                </select>
+                <select name="workplace_id">
+                    <option value="">All Workplaces</option>
+                    {% for wp in workplaces %}
+                    <option value="{{ wp.id }}">{{ wp.name }}</option>
+                    {% endfor %}
+                </select>
+                <button class="export-btn" type="submit">⬇ Export to Excel</button>
+            </form>
+        </div>
     </div>
+
     <table>
         <tr>
             <th>Employee</th>
