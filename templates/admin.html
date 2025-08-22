@@ -304,7 +304,12 @@ function fetchLogs() {
     const employeeId = employeeFilter.value;
     const workplaceId = workplaceFilter.value;
 
-    fetch(`/filter_logs?employee_id=${employeeId}&workplace_id=${workplaceId}`)
+    // Build query string for /filter_logs
+    const params = new URLSearchParams();
+    if (employeeId) params.append('employee_id', employeeId);
+    if (workplaceId) params.append('workplace_id', workplaceId);
+
+    fetch(`/filter_logs?${params.toString()}`)
         .then(response => response.json())
         .then(data => {
             logsTableBody.innerHTML = '';
@@ -325,14 +330,22 @@ function fetchLogs() {
                 logsTableBody.appendChild(tr);
             });
 
-            exportBtn.setAttribute('onclick', `window.location='/export?employee_id=${employeeId}&workplace_id=${workplaceId}'; return false;`);
+            // Build query string for export button
+            const exportParams = new URLSearchParams();
+            if (employeeId) exportParams.append('employee_id', employeeId);
+            if (workplaceId) exportParams.append('workplace_id', workplaceId);
+
+            exportBtn.onclick = () => {
+                window.location = `/export?${exportParams.toString()}`;
+                return false;
+            };
         });
 }
 
-// Run fetchLogs once on page load
+// Run fetchLogs on page load
 fetchLogs();
 
-// Also run when filters change
+// Run when filters change
 employeeFilter.addEventListener('change', fetchLogs);
 workplaceFilter.addEventListener('change', fetchLogs);
 </script>
