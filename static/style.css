@@ -1,27 +1,23 @@
 /* --------------------- Work Logs Table --------------------- */
-/* Normal horizontal layout for desktop */
+/* Keep normal table layout so columns stay horizontal */
 .logs-card table td {
-    display: table-cell;
-    justify-content: initial;
-    align-items: initial;
-    gap: 0;
+    display: table-cell;  /* ensures columns stay side by side */
+    vertical-align: middle;
 }
 
-/* Stack on small screens only */
-@media (max-width: 600px) {
-    .logs-card table td {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-    }
+/* Align the delete button in Work Logs table to the right */
+.logs-card table td form {
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* --------------------- Employee/Workplace Cards --------------------- */
-.card table td {
+/* Flex layout so delete button is next to name */
+.card:not(.logs-card) table td {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
 /* --------------------- Buttons --------------------- */
@@ -35,4 +31,29 @@
 }
 .card button.delete:hover {
     opacity: 0.9;
+}
+
+/* --------------------- Responsive --------------------- */
+@media (max-width: 600px) {
+    /* Keep all tables horizontal by allowing scroll instead of stacking */
+    .logs-card table, 
+    .logs-card table thead, 
+    .logs-card table tbody, 
+    .logs-card table tr, 
+    .logs-card table th, 
+    .logs-card table td {
+        display: table; /* maintain table layout */
+    }
+
+    .logs-card table {
+        width: 100%;
+        overflow-x: auto; /* enable horizontal scroll */
+        display: block;
+    }
+
+    /* Employee/Workplace tables still stack on very small screens */
+    .card:not(.logs-card) table td {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 }
