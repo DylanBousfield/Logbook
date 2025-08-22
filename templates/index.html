@@ -31,20 +31,22 @@
             font-weight: bold;
             color: #34495e;
         }
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
         input, select, textarea {
             padding: 10px;
             border-radius: 5px;
             border: 1px solid #ccc;
             font-size: 1em;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 80px;
+            width: 100%;
+            box-sizing: border-box;
         }
         button {
-            margin-top: 20px;
-            padding: 12px;
-            background-color: #3498db;
+            padding: 10px 16px;
+            background-color: #3498db; 
             border: none;
             color: white;
             font-size: 1em;
@@ -55,15 +57,32 @@
         button:hover {
             background-color: #2980b9;
         }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
         a {
             display: block;
             text-align: center;
             margin-top: 20px;
-            color: #2c3e50;
+            color: #3498db; 
             text-decoration: none;
         }
         a:hover {
             text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                margin: 20px;
+                padding: 20px;
+            }
+            input, select, textarea, button {
+                font-size: 0.95em;
+            }
+            .input-group {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -71,19 +90,26 @@
     <div class="container">
         <h1>Enter Work Log</h1>
         <form method="POST" action="/log">
+
             <label>Employee:</label>
-            <select name="employee_id">
-                {% for emp in employees %}
-                <option value="{{ emp.id }}">{{ emp.name }}</option>
-                {% endfor %}
-            </select>
+            <div class="input-group">
+                <select id="employeeSelect" name="employee_id" required>
+                    {% for emp in employees %}
+                    <option value="{{ emp.id }}">{{ emp.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" onclick="addEmployee()">+ Add</button>
+            </div>
 
             <label>Workplace:</label>
-            <select name="workplace_id">
-                {% for wp in workplaces %}
-                <option value="{{ wp.id }}">{{ wp.name }}</option>
-                {% endfor %}
-            </select>
+            <div class="input-group">
+                <select id="workplaceSelect" name="workplace_id" required>
+                    {% for wp in workplaces %}
+                    <option value="{{ wp.id }}">{{ wp.name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="button" onclick="addWorkplace()">+ Add</button>
+            </div>
 
             <label>Date:</label>
             <input type="date" name="date" required>
@@ -98,5 +124,33 @@
         </form>
         <a href="/admin">Go to Admin Panel</a>
     </div>
+
+    <script>
+        function addEmployee() {
+            let name = prompt("Enter new employee name:");
+            if(name) {
+                // Optionally, send AJAX request to server to create employee
+                let select = document.getElementById("employeeSelect");
+                let option = document.createElement("option");
+                option.text = name;
+                option.value = "new_" + Date.now(); // temporary value
+                option.selected = true;
+                select.add(option);
+            }
+        }
+
+        function addWorkplace() {
+            let name = prompt("Enter new workplace name:");
+            if(name) {
+                // Optionally, send AJAX request to server to create workplace
+                let select = document.getElementById("workplaceSelect");
+                let option = document.createElement("option");
+                option.text = name;
+                option.value = "new_" + Date.now(); // temporary value
+                option.selected = true;
+                select.add(option);
+            }
+        }
+    </script>
 </body>
 </html>

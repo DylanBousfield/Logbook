@@ -3,10 +3,10 @@ import os
 from datetime import datetime, date
 from io import BytesIO
 
-from flask import Flask, render_template, request, redirect, url_for, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, send_file
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import func
 import pandas as pd
+import os
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///./worklogs.db"
@@ -42,10 +42,9 @@ class WorkLog(db.Model):
 def initialize_database():
     db.create_all()
     if Employee.query.count() == 0:
-        db.session.add(Employee(name="Dylan"))
+        db.session.add(Employee(name="John Doe"))
     if Workplace.query.count() == 0:
-        db.session.add(Workplace(name="Admin"))
-
+        db.session.add(Workplace(name="Office"))
     db.session.commit()
 
 # -----------------------------
@@ -75,29 +74,6 @@ def log():
     db.session.add(new_log)
     db.session.commit()
     return redirect(url_for("index"))
-# Add new employee
-@app.route("/add_employee", methods=["GET", "POST"])
-def add_employee():
-    if request.method == "POST":
-        name = request.form["name"]
-        if name:
-            new_emp = Employee(name=name)
-            db.session.add(new_emp)
-            db.session.commit()
-            return redirect(url_for("admin"))
-    return render_template("add_employee.html")
-
-# Add new workplace
-@app.route("/add_workplace", methods=["GET", "POST"])
-def add_workplace():
-    if request.method == "POST":
-        name = request.form["name"]
-        if name:
-            new_wp = Workplace(name=name)
-            db.session.add(new_wp)
-            db.session.commit()
-            return redirect(url_for("admin"))
-    return render_template("add_workplace.html")
 
 @app.route("/admin")
 def admin():
@@ -133,6 +109,46 @@ def export():
     filename = "worklogs.xlsx"
     df.to_excel(filename, index=False)
     return send_file(filename, as_attachment=True)
+
+# -----------------------------
+# NEW CRUD ROUTES
+# -----------------------------
+@app.route("/add_employee", methods=["POST"])
+def add_employee():
+    name = request.form["name"]
+    if not Employee.query.filter_by(name=name).first():
+        db.session.add(Employee(name=name))
+        db.session.commit()
+    return redirect(url_for("admin"))
+
+@app.route("/delete_employee/<int:id>", methods=["POST"])
+def delete_employee(id):
+    emp = Employee.query.get_or_404(id)
+    db.session.delete(emp)
+    db.session.commit()
+    return redirect(url_for("admin"))
+
+@app.route("/add_workplace", methods=["POST"])
+def add_workplace():
+    name = request.form["name"]
+    if not Workplace.query.filter_by(name=name).first():
+        db.session.add(Workplace(name=name))
+        db.session.commit()
+    return redirect(url_for("admin"))
+
+@app.route("/delete_workplace/<int:id>", methods=["POST"])
+def delete_workplace(id):
+    wp = Workplace.query.get_or_404(id)
+    db.session.delete(wp)
+    db.session.commit()
+    return redirect(url_for("admin"))
+
+@app.route("/delete_log/<int:id>", methods=["POST"])
+def delete_log(id):
+    log = WorkLog.query.get_or_404(id)
+    db.session.delete(log)
+    db.session.commit()
+    return redirect(url_for("admin"))
 
 # -----------------------------
 # RUN LOCAL
