@@ -216,49 +216,48 @@
 <div class="grid">
     <!-- Employee Card -->
     <div class="card">
-        <h2>Employees</h2>
-        <form method="POST" action="/add_employee">
-            <input type="text" name="name" placeholder="Employee Name" required>
-            <button type="submit">Add</button>
-        </form>
-        <table>
-            <tbody>
-                {% for e in employees %}
-                <tr>
-                    <td>{{ e.name }}</td>
-                    <td style="text-align: right;">
-                        <form method="POST" action="/delete_employee/{{ e.id }}">
-                            <button class="delete" type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+    <h2>Employees</h2>
+    <form method="POST" action="/add_employee">
+        <input type="text" name="name" placeholder="Employee Name" required>
+        <button type="submit">Add</button>
+    </form>
+    <table>
+        <tbody>
+            {% for e in employees %}
+            <tr>
+                <td style="display: flex; justify-content: space-between; align-items: center;">
+                    {{ e.name }}
+                    <form method="POST" action="/delete_employee/{{ e.id }}" style="margin:0;">
+                        <button class="delete" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-    <!-- Workplace Card -->
-    <div class="card">
-        <h2>Workplaces</h2>
-        <form method="POST" action="/add_workplace">
-            <input type="text" name="name" placeholder="Workplace Name" required>
-            <button type="submit">Add</button>
-        </form>
-        <table>
-            <tbody>
-                {% for w in workplaces %}
-                <tr>
-                    <td>{{ w.name }}</td>
-                    <td style="text-align: right;">
-                        <form method="POST" action="/delete_workplace/{{ w.id }}">
-                            <button class="delete" type="submit">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<!-- Workplace Card -->
+<div class="card">
+    <h2>Workplaces</h2>
+    <form method="POST" action="/add_workplace">
+        <input type="text" name="name" placeholder="Workplace Name" required>
+        <button type="submit">Add</button>
+    </form>
+    <table>
+        <tbody>
+            {% for w in workplaces %}
+            <tr>
+                <td style="display: flex; justify-content: space-between; align-items: center;">
+                    {{ w.name }}
+                    <form method="POST" action="/delete_workplace/{{ w.id }}" style="margin:0;">
+                        <button class="delete" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 <a href="/">⬅ Back to Work Log</a>
