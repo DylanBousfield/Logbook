@@ -5,6 +5,7 @@ from io import BytesIO
 
 from flask import Flask, render_template, request, redirect, url_for, send_file
 from flask_sqlalchemy import SQLAlchemy
+from flask import jsonify
 import pandas as pd
 import os
 
@@ -81,6 +82,35 @@ def admin():
     employees = Employee.query.all()
     workplaces = Workplace.query.all()
     return render_template("admin.html", logs=logs, employees=employees, workplaces=workplaces)
+from flask import jsonify
+
+@app.route("/filter_logs")
+def filter_logs():
+    employee_id = request.args.get('employee_id', type=int)
+    workplace_id = request.args.get('workplace_id', type=int)
+
+    query = WorkLog.query
+
+    if employee_id:
+        query = query.filter_by(employee_id=employee_id)
+    if workplace_id:
+        query = query.filter_by(workplace_id=workplace_id)
+
+    logs = query.all()
+
+    log_list = []
+    for log in logs:
+        log_list.append({
+            'id': log.id,
+            'employee': log.employee.name,
+            'workplace': log.workplace.name,
+            'date': log.date,
+            'hours': log.hours,
+            'description': log.description
+        })
+
+    return jsonify(logs=log_list)
+
 
 @app.route('/export')
 def export_excel():
