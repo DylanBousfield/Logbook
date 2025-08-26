@@ -1,353 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel</title>
-    <style>
-        /* --- General --- */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 40px;
-            background-color: #f4f7fb;
-            color: #333;
-        }
-
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-        header h1 {
-            color: #2c3e50;
-            margin: 0;
-        }
-        header img {
-            height: 60px;
-        }
-
-        /* Cards */
-        .card {
-            background: #fff;
-            padding: 25px;
-            margin-bottom: 30px;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-            width: 100%;
-        }
-
-        /* Grid for Employee & Workplace cards */
-        .grid {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .grid .card {
-            flex: 1 1 300px;
-        }
-
-        /* Work Logs Card */
-        .logs-card h2 {
-            margin: 0;
-            color: #2c3e50;
-        }
-
-        /* Filters + Export button */
-        .export-btn {
-            background: #3498db;
-            padding: 10px 18px;
-            border-radius: 5px;
-            color: white;
-            text-decoration: none;
-            cursor: pointer;
-            border: none;
-            transition: 0.3s;
-        }
-        .export-btn:hover {
-            opacity: 0.9;
-        }
-
-        /* Tables */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-        }
-        table th, table td {
-            border: 1px solid #e0e0e0;
-            padding: 10px;
-            text-align: left;
-            vertical-align: middle;
-        }
-        table th {
-            background: #3498db;
-            color: white;
-        }
-        table tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        /* --------------------- Work Logs Table --------------------- */
-        .logs-card table td {
-            display: table-cell; /* standard table layout */
-            vertical-align: middle;
-        }
-        .logs-card table td form {
-            display: flex;
-            justify-content: flex-end;
-            margin: 0;
-        }
-
-        /* --------------------- Employee/Workplace Cards --------------------- */
-        .card:not(.logs-card) table td {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* Employee/Workplace Form Inputs */
-        .card form {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-bottom: 10px;
-        }
-        .card form input[name="name"] {
-            flex: 2;       /* make input wider */
-            min-width: 0;  /* prevent overflow issues */
-            padding: 8px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-        }
-        .card form button {
-            flex: 1;        /* smaller than input */
-            max-width: 120px; /* optional max width */
-            padding: 8px 16px;
-            border: none;
-            border-radius: 5px;
-            background: #3498db;
-            color: white;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .card form button.delete {
-            background: #dc3545;
-        }
-        .card form button:hover {
-            opacity: 0.9;
-        }
-
-        /* Buttons inside tables */
-        .card button.delete {
-            background: #dc3545;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: none;
-            cursor: pointer;
-        }
-        .card button.delete:hover {
-            opacity: 0.9;
-        }
-
-        /* Links */
-        a {
-            display: inline-block;
-            margin-top: 15px;
-            color: #3498db;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* --------------------- Responsive --------------------- */
-        @media (max-width: 600px) {
-            /* Work Logs Table - horizontal scroll */
-            .logs-card table {
-                display: block;
-                overflow-x: auto;
-                width: 100%;
-            }
-            .logs-card table td,
-            .logs-card table th {
-                white-space: nowrap;
-            }
-
-            /* Employee/Workplace tables - stack name & button */
-            .card:not(.logs-card) table td {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Admin Panel</title>
+<style>
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;margin:40px;background:#f4f7fb;color:#333;}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;}
+header h1{margin:0;color:#2c3e50;}
+.card{background:#fff;padding:25px;margin-bottom:30px;border-radius:10px;box-shadow:0 3px 10px rgba(0,0,0,0.1);}
+.grid{display:flex;gap:20px;flex-wrap:wrap;}
+.grid .card{flex:1 1 300px;}
+table{width:100%;border-collapse:collapse;margin-top:15px;}
+table th,table td{border:1px solid #e0e0e0;padding:10px;text-align:left;}
+table th{background:#3498db;color:#fff;}
+table tr:nth-child(even){background:#f8f9fa;}
+button.delete{background:#dc3545;color:white;padding:6px 12px;border:none;border-radius:4px;cursor:pointer;}
+button.delete:hover{opacity:0.9;}
+button.add{background:#3498db;color:white;border:none;padding:8px 16px;border-radius:5px;cursor:pointer;}
+button.add:hover{opacity:0.9;}
+.export-btn{background:#3498db;color:white;border:none;padding:10px 18px;border-radius:5px;cursor:pointer;}
+.export-btn:hover{opacity:0.9;}
+a{display:inline-block;margin-top:15px;color:#3498db;text-decoration:none;}
+a:hover{text-decoration:underline;}
+</style>
 </head>
 <body>
 
 <header>
-    <h1>Admin Panel</h1>
-    <img src="{{ url_for('static', filename='storm_logo.png') }}" alt="Storm Electrical Logo">
+<h1>Admin Panel</h1>
+<img src="{{ url_for('static',filename='storm_logo.png') }}" alt="Logo" height="60">
 </header>
 
-<!-- Work Logs Card -->
 <div class="card logs-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-        <h2>Work Logs</h2>
-        <div style="display: flex; gap: 10px; align-items: center;">
-            <select id="employeeFilter">
-                <option value="">All Employees</option>
-                {% for emp in employees %}
-                <option value="{{ emp.id }}">{{ emp.name }}</option>
-                {% endfor %}
-            </select>
-            <select id="workplaceFilter">
-                <option value="">All Workplaces</option>
-                {% for wp in workplaces %}
-                <option value="{{ wp.id }}">{{ wp.name }}</option>
-                {% endfor %}
-            </select>
-            <button class="export-btn" id="exportBtn">⬇ Export to Excel</button>
-        </div>
-    </div>
-
-    <table id="logsTable">
-        <thead>
-            <tr>
-                <th>Employee</th>
-                <th>Workplace</th>
-                <th>Date</th>
-                <th>Hours</th>
-                <th>Description</th>
-                <th>Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
-            <tr>
-                <td>{{ log.employee.name }}</td>
-                <td>{{ log.workplace.name }}</td>
-                <td>{{ log.date }}</td>
-                <td>{{ log.hours }}</td>
-                <td>{{ log.description }}</td>
-                <td>
-                    <form method="POST" action="/delete_log/{{ log.id }}">
-                        <button class="delete" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;">
+<h2>Work Logs</h2>
+<div style="display:flex;gap:10px;align-items:center;">
+<select id="employeeFilter">
+<option value="">All Employees</option>
+{% for emp in employees %}<option value="{{ emp.id }}">{{ emp.name }}</option>{% endfor %}
+</select>
+<select id="workplaceFilter">
+<option value="">All Workplaces</option>
+{% for wp in workplaces %}<option value="{{ wp.id }}">{{ wp.name }}</option>{% endfor %}
+</select>
+<button class="export-btn" id="exportBtn">⬇ Export to Excel</button>
+</div>
 </div>
 
-<!-- Employee & Workplace Cards -->
-<div class="grid">
-    <!-- Employee Card -->
-    <div class="card">
-        <h2>Employees</h2>
-        <form method="POST" action="/add_employee">
-            <input type="text" name="name" placeholder="Employee Name" required>
-            <button type="submit">Add</button>
-        </form>
-        <table>
-            <tbody>
-                {% for e in employees %}
-                <tr>
-                    <td style="display: flex; justify-content: space-between; align-items: center;">
-                        {{ e.name }}
-                        <form method="POST" action="/delete_employee/{{ e.id }}" style="margin:0;">
-                            <button class="delete" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<table id="logsTable">
+<thead><tr>
+<th>Employee</th><th>Workplace</th><th>Date</th><th>Hours</th><th>Description</th><th>Delete</th>
+</tr></thead>
+<tbody>{% for log in logs %}
+<tr data-id="{{ log.id }}">
+<td>{{ log.employee.name }}</td>
+<td>{{ log.workplace.name }}</td>
+<td>{{ log.date }}</td>
+<td>{{ log.hours }}</td>
+<td>{{ log.description }}</td>
+<td>
+<form method="POST" action="/delete_log/{{ log.id }}"><button class="delete" type="submit">Delete</button></form>
+</td>
+</tr>{% endfor %}</tbody>
+</table>
+</div>
 
-    <!-- Workplace Card -->
-    <div class="card">
-        <h2>Workplaces</h2>
-        <form method="POST" action="/add_workplace">
-            <input type="text" name="name" placeholder="Workplace Name" required>
-            <button type="submit">Add</button>
-        </form>
-        <table>
-            <tbody>
-                {% for w in workplaces %}
-                <tr>
-                    <td style="display: flex; justify-content: space-between; align-items: center;">
-                        {{ w.name }}
-                        <form method="POST" action="/delete_workplace/{{ w.id }}" style="margin:0;">
-                            <button class="delete" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
+<div class="grid">
+<!-- Employee -->
+<div class="card">
+<h2>Employees</h2>
+<form id="addEmployeeForm">
+<input type="text" id="employeeName" placeholder="Employee Name" required>
+<button type="submit" class="add">Add</button>
+</form>
+<table id="employeeTable">
+<tbody>{% for e in employees %}
+<tr data-id="{{ e.id }}">
+<td>{{ e.name }}
+<form method="POST" action="/delete_employee/{{ e.id }}">
+<button class="delete" type="submit">Delete</button>
+</form>
+</td>
+</tr>{% endfor %}</tbody>
+</table>
+</div>
+
+<!-- Workplace -->
+<div class="card">
+<h2>Workplaces</h2>
+<form id="addWorkplaceForm">
+<input type="text" id="workplaceName" placeholder="Workplace Name" required>
+<button type="submit" class="add">Add</button>
+</form>
+<table id="workplaceTable">
+<tbody>{% for w in workplaces %}
+<tr data-id="{{ w.id }}">
+<td>{{ w.name }}
+<form method="POST" action="/delete_workplace/{{ w.id }}">
+<button class="delete" type="submit">Delete</button>
+</form>
+</td>
+</tr>{% endfor %}</tbody>
+</table>
+</div>
 </div>
 
 <a href="/">⬅ Back to Work Log</a>
 
-<!-- JavaScript for filtering and export -->
 <script>
-const employeeFilter = document.getElementById('employeeFilter');
-const workplaceFilter = document.getElementById('workplaceFilter');
-const logsTableBody = document.querySelector('#logsTable tbody');
-const exportBtn = document.getElementById('exportBtn');
-
-function fetchLogs() {
-    const employeeId = employeeFilter.value;
-    const workplaceId = workplaceFilter.value;
-
-    // Build query string for /filter_logs
-    const params = new URLSearchParams();
-    if (employeeId) params.append('employee_id', employeeId);
-    if (workplaceId) params.append('workplace_id', workplaceId);
-
-    fetch(`/filter_logs?${params.toString()}`)
-        .then(response => response.json())
-        .then(data => {
-            logsTableBody.innerHTML = '';
-            data.logs.forEach(log => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td>${log.employee}</td>
-                    <td>${log.workplace}</td>
-                    <td>${log.date}</td>
-                    <td>${log.hours}</td>
-                    <td>${log.description}</td>
-                    <td>
-                        <form method="POST" action="/delete_log/${log.id}">
-                            <button class="delete" type="submit" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
-                    </td>
-                `;
-                logsTableBody.appendChild(tr);
-            });
-
-            // Build query string for export button
-            const exportParams = new URLSearchParams();
-            if (employeeId) exportParams.append('employee_id', employeeId);
-            if (workplaceId) exportParams.append('workplace_id', workplaceId);
-
-            exportBtn.onclick = () => {
-                window.location = `/export?${exportParams.toString()}`;
-                return false;
-            };
-        });
+async function postForm(url,data={}) {
+    const response = await fetch(url,{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(data)});
+    return response.json();
 }
 
-// Run fetchLogs on page load
-fetchLogs();
+// ---------- Add Employee ----------
+document.getElementById('addEmployeeForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const input=document.getElementById('employeeName');
+    const data=await postForm('/add_employee',{name:input.value.trim()});
+    if(data.success){
+        const tbody=document.querySelector('#employeeTable tbody');
+        const tr=document.createElement('tr'); tr.dataset.id=data.id;
+        tr.innerHTML=`<td>${data.name}<form method="POST" action="/delete_employee/${data.id}"><button class="delete" type="submit">Delete</button></form></td>`;
+        tbody.appendChild(tr);
+        const filter=document.getElementById('employeeFilter');
+        const option=document.createElement('option'); option.value=data.id; option.text=data.name; filter.add(option);
+        input.value='';
+    }else alert(data.error);
+});
 
-// Run when filters change
-employeeFilter.addEventListener('change', fetchLogs);
-workplaceFilter.addEventListener('change', fetchLogs);
+// ---------- Add Workplace ----------
+document.getElementById('addWorkplaceForm').addEventListener('submit', async e=>{
+    e.preventDefault();
+    const input=document.getElementById('workplaceName');
+    const data=await postForm('/add_workplace',{name:input.value.trim()});
+    if(data.success){
+        const tbody=document.querySelector('#workplaceTable tbody');
+        const tr=document.createElement('tr'); tr.dataset.id=data.id;
+        tr.innerHTML=`<td>${data.name}<form method="POST" action="/delete_workplace/${data.id}"><button class="delete" type="submit">Delete</button></form></td>`;
+        tbody.appendChild(tr);
+        const filter=document.getElementById('workplaceFilter');
+        const option=document.createElement('option'); option.value=data.id; option.text=data.name; filter.add(option);
+        input.value='';
+    }else alert(data.error);
+});
+
+// ---------- Delete ----------
+document.addEventListener('click', async e=>{
+    if(!e.target.matches('button.delete')) return;
+    if(!confirm('Are you sure?')) return;
+    const form=e.target.closest('form'); const action=form.action;
+    const data=await postForm(action);
+    if(data.success){ const tr=form.closest('tr'); if(tr) tr.remove(); } else alert(data.error);
+});
+
+// ---------- Filter Logs ----------
+async function fetchLogs(){
+    const empId=document.getElementById('employeeFilter').value;
+    const wpId=document.getElementById('workplaceFilter').value;
+    const params=new URLSearchParams();
+    if(empId) params.append('employee_id',empId);
+    if(wpId) params.append('workplace_id',wpId);
+    const res=await fetch(`/filter_logs?${params.toString()}`);
+    const data=await res.json();
+    const tbody=document.querySelector('#logsTable tbody');
+    tbody.innerHTML='';
+    data.logs.forEach(log=>{
+        const tr=document.createElement('tr'); tr.dataset.id=log.id;
+        tr.innerHTML=`<td>${log.employee}</td><td>${log.workplace}</td><td>${log.date}</td><td>${log.hours}</td><td>${log.description}</td>
+        <td><form method="POST" action="/delete_log/${log.id}"><button class="delete" type="submit">Delete</button></form></td>`;
+        tbody.appendChild(tr);
+    });
+    const exportBtn=document.getElementById('exportBtn');
+    exportBtn.onclick=()=>{ window.location=`/export?${params.toString()}`; return false; };
+}
+
+fetchLogs();
+document.getElementById('employeeFilter').addEventListener('change',fetchLogs);
+document.getElementById('workplaceFilter').addEventListener('change',fetchLogs);
 </script>
 
 </body>
