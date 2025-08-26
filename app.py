@@ -39,7 +39,10 @@ class WorkLog(db.Model):
 # -----------------------------
 # DATABASE INITIALIZATION
 # -----------------------------
-@app.before_request
+
+# init_db.py
+from app import db, Employee, Workplace
+
 def initialize_database():
     db.create_all()
     if Employee.query.count() == 0:
@@ -47,6 +50,11 @@ def initialize_database():
     if Workplace.query.count() == 0:
         db.session.add(Workplace(name="Office"))
     db.session.commit()
+    print("Database initialized with default entries.")
+
+if __name__ == "__main__":
+    initialize_database()
+
 
 # -----------------------------
 # ROUTES
