@@ -126,29 +126,37 @@
     </div>
 
     <script>
-        function addEmployee() {
+        async function addEmployee() {
             let name = prompt("Enter new employee name:");
-            if(name) {
-                // Optionally, send AJAX request to server to create employee
-                let select = document.getElementById("employeeSelect");
-                let option = document.createElement("option");
-                option.text = name;
-                option.value = "new_" + Date.now(); // temporary value
-                option.selected = true;
-                select.add(option);
-            }
+            if (name) {
+                let response = await fetch("/add_employee", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `name=${encodeURIComponent(name)}`
+                });
+
+                if (response.ok) {
+                    location.reload(); // refresh to show new employee in dropdown
+                } else {
+                    alert("Error adding employee");
+                }
+             }
         }
 
-        function addWorkplace() {
+        async function addWorkplace() {
             let name = prompt("Enter new workplace name:");
-            if(name) {
-                // Optionally, send AJAX request to server to create workplace
-                let select = document.getElementById("workplaceSelect");
-                let option = document.createElement("option");
-                option.text = name;
-                option.value = "new_" + Date.now(); // temporary value
-                option.selected = true;
-                select.add(option);
+            if (name) {
+                let response = await fetch("/add_workplace", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                    body: `name=${encodeURIComponent(name)}`
+                });
+
+                if (response.ok) {
+                    location.reload(); // refresh to show new workplace in dropdown
+                } else {
+                    alert("Error adding workplace");
+                }
             }
         }
     </script>
