@@ -1,106 +1,168 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Work Log</title>
-<style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f8;
-    margin: 0; padding: 0;
-}
-.container {
-    max-width: 600px;
-    margin: 50px auto;
-    background: #fff;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-}
-h1 { text-align: center; color: #2c3e50; }
-form { display: flex; flex-direction: column; }
-label { margin-top: 15px; margin-bottom: 5px; font-weight: bold; color: #34495e; }
-.input-group { display: flex; gap: 8px; margin-bottom: 10px; }
-input, select, textarea { padding: 10px; border-radius: 5px; border: 1px solid #ccc; width: 100%; box-sizing: border-box; }
-button { padding: 10px 16px; border: none; border-radius: 5px; background: #3498db; color: white; cursor: pointer; transition: 0.3s; }
-button:hover { background: #2980b9; }
-textarea { resize: vertical; min-height: 80px; }
-a { display: block; text-align: center; margin-top: 20px; color: #3498db; text-decoration: none; }
-a:hover { text-decoration: underline; }
-@media(max-width:480px){ .container { margin:20px; padding:20px; } .input-group { flex-direction: column; } }
-</style>
+    <meta charset="UTF-8">
+    <title>Work Log</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f8;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        .input-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        input, select, textarea {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 16px;
+            background-color: #3498db; 
+            border: none;
+            color: white;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #3498db; 
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 480px) {
+            .container { margin: 20px; padding: 20px; }
+            input, select, textarea, button { font-size: 0.95em; }
+            .input-group { flex-direction: column; }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-<h1>Enter Work Log</h1>
-<form id="logForm" method="POST" action="/log">
-    <label>Employee:</label>
-    <div class="input-group">
-        <select id="employeeSelect" name="employee_id" required>
-            {% for emp in employees %}
-            <option value="{{ emp.id }}">{{ emp.name }}</option>
-            {% endfor %}
-        </select>
-        <button type="button" onclick="addEmployee(null,'employeeSelect')">+ Add</button>
-    </div>
+    <h1>Enter Work Log</h1>
+    <form method="POST" action="/log">
 
-    <label>Workplace:</label>
-    <div class="input-group">
-        <select id="workplaceSelect" name="workplace_id" required>
-            {% for wp in workplaces %}
-            <option value="{{ wp.id }}">{{ wp.name }}</option>
-            {% endfor %}
-        </select>
-        <button type="button" onclick="addWorkplace(null,'workplaceSelect')">+ Add</button>
-    </div>
+        <label>Employee:</label>
+        <div class="input-group">
+            <select id="employeeSelect" name="employee_id" required>
+                {% for emp in employees %}
+                <option value="{{ emp.id }}">{{ emp.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" onclick="addEmployee()">+ Add</button>
+        </div>
 
-    <label>Date:</label>
-    <input type="date" name="date" required>
-    <label>Hours:</label>
-    <input type="number" step="0.1" name="hours" required>
-    <label>Description:</label>
-    <textarea name="description" required></textarea>
-    <button type="submit">Submit Log</button>
-</form>
-<a href="/admin">Go to Admin Panel</a>
+        <label>Workplace:</label>
+        <div class="input-group">
+            <select id="workplaceSelect" name="workplace_id" required>
+                {% for wp in workplaces %}
+                <option value="{{ wp.id }}">{{ wp.name }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" onclick="addWorkplace()">+ Add</button>
+        </div>
+
+        <label>Date:</label>
+        <input type="date" name="date" required>
+
+        <label>Hours:</label>
+        <input type="number" name="hours" step="0.1" required>
+
+        <label>Description:</label>
+        <textarea name="description" required></textarea>
+
+        <button type="submit">Submit Log</button>
+    </form>
+    <a href="/admin">Go to Admin Panel</a>
 </div>
 
 <script>
-async function postForm(url,data={}) {
-    const response = await fetch(url,{
-        method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body: new URLSearchParams(data)
+async function addEmployee() {
+    const name = prompt("Enter new employee name:");
+    if (!name) return;
+
+    const response = await fetch("/add_employee", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `name=${encodeURIComponent(name)}`
     });
-    return response.json();
+
+    if (response.ok) {
+        const data = await response.json();
+        const select = document.getElementById('employeeSelect');
+        const option = document.createElement('option');
+        option.value = data.id;
+        option.text = data.name;
+        option.selected = true;
+        select.appendChild(option);
+    } else {
+        alert("Error adding employee");
+    }
 }
 
-async function addEmployee(nameInputId,selectId){
-    const input = document.getElementById(nameInputId);
-    const name = input?.value?.trim() || prompt("Enter new employee name:");
-    if(!name) return;
-    const data = await postForm('/add_employee',{name});
-    if(data.success){
-        const select=document.getElementById(selectId);
-        const option=document.createElement('option');
-        option.value=data.id; option.text=data.name;
-        select.add(option); select.value=data.id;
-        if(input) input.value='';
-    } else alert(data.error||'Error adding employee');
-}
+async function addWorkplace() {
+    const name = prompt("Enter new workplace name:");
+    if (!name) return;
 
-async function addWorkplace(nameInputId,selectId){
-    const input = document.getElementById(nameInputId);
-    const name = input?.value?.trim() || prompt("Enter new workplace name:");
-    if(!name) return;
-    const data = await postForm('/add_workplace',{name});
-    if(data.success){
-        const select=document.getElementById(selectId);
-        const option=document.createElement('option');
-        option.value=data.id; option.text=data.name;
-        select.add(option); select.value=data.id;
-        if(input) input.value='';
-    } else alert(data.error||'Error adding workplace');
+    const response = await fetch("/add_workplace", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `name=${encodeURIComponent(name)}`
+    });
+
+    if (response.ok) {
+        const data = await response.json();
+        const select = document.getElementById('workplaceSelect');
+        const option = document.createElement('option');
+        option.value = data.id;
+        option.text = data.name;
+        option.selected = true;
+        select.appendChild(option);
+    } else {
+        alert("Error adding workplace");
+    }
 }
 </script>
 </body>
